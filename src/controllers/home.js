@@ -60,6 +60,7 @@ function rewrite(req, res, next) {
             return next();
         }
         let route = adminHomePageRoute();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         if (meta.config.allowUserHomePage) {
             route = yield getUserHomeRoute(req.uid);
         }
