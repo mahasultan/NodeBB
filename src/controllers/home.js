@@ -85,6 +85,7 @@ function rewrite(req, res, next) {
 exports.rewrite = rewrite;
 function pluginHook(req, res, next) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    // Explicitly assert the type of res.locals.homePageRoute
     const hook = `action:homepage.get:${res.locals.homePageRoute}`;
     plugins.hooks
         .fire(hook, {

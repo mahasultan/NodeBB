@@ -71,9 +71,12 @@ async function rewrite(req: express.Request, res: express.Response, next: expres
 
 export { rewrite };
 
+
 function pluginHook(req: express.Request, res: express.Response, next: express.NextFunction): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const hook = `action:homepage.get:${res.locals.homePageRoute}`;
+    // Explicitly assert the type of res.locals.homePageRoute
+    const hook = `action:homepage.get:${res.locals.homePageRoute as string}`;
+
     plugins.hooks
         .fire(hook, {
             req: req,
@@ -87,6 +90,6 @@ function pluginHook(req: express.Request, res: express.Response, next: express.N
         });
 }
 
-
 export { pluginHook };
+
 
