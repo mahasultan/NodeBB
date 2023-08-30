@@ -84,11 +84,18 @@ function rewrite(req, res, next) {
 }
 exports.rewrite = rewrite;
 function pluginHook(req, res, next) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const hook = `action:homepage.get:${res.locals.homePageRoute}`;
-    plugins.hooks.fire(hook, {
+    plugins.hooks
+        .fire(hook, {
         req: req,
         res: res,
         next: next,
+    })
+        .catch((error) => {
+        // Handle the error here if needed
+        console.error('Error in pluginHook:', error);
+        next(error); // Propagate the error to the next middleware
     });
 }
 exports.pluginHook = pluginHook;

@@ -19,9 +19,7 @@ interface UserSettings {
 interface AppConfig {
     homePageRoute: string;
     homePageCustom: string;
-    // Add other properties from the config if needed
 }
-
 
 function adminHomePageRoute(): string {
     const { homePageRoute, homePageCustom }: AppConfig = meta.config;
@@ -74,12 +72,19 @@ async function rewrite(req: express.Request, res: express.Response, next: expres
 export { rewrite };
 
 function pluginHook(req: express.Request, res: express.Response, next: express.NextFunction): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const hook = `action:homepage.get:${res.locals.homePageRoute}`;
-    plugins.hooks.fire(hook, {
-        req: req,
-        res: res,
-        next: next,
-    });
+    plugins.hooks
+        .fire(hook, {
+            req: req,
+            res: res,
+            next: next,
+        })
+        .catch((error) => {
+            // Handle the error here if needed
+            console.error('Error in pluginHook:', error);
+            next(error); // Propagate the error to the next middleware
+        });
 }
 
 
