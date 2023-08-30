@@ -27,8 +27,8 @@ function adminHomePageRoute(): string {
     return route.replace(/^\//, '');
 }
 
-
 async function getUserHomeRoute(uid: string): Promise<string> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const settings: UserSettings = await user.getSettings(uid) as UserSettings;
     let route = adminHomePageRoute();
 
