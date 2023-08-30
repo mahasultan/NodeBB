@@ -38,7 +38,8 @@ const plugins = __importStar(require("../plugins"));
 const meta = __importStar(require("../meta"));
 const user = __importStar(require("../user"));
 function adminHomePageRoute() {
-    const { homePageRoute, homePageCustom } = meta.config;
+    const config = meta.config; // Type assertion
+    const { homePageRoute, homePageCustom } = config;
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
     return route.replace(/^\//, '');
 }

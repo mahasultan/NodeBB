@@ -20,11 +20,13 @@ interface AppConfig {
 }
 
 function adminHomePageRoute(): string {
-    const { homePageRoute, homePageCustom }: AppConfig = meta.config;
+    const config = meta.config as AppConfig; // Type assertion
+    const { homePageRoute, homePageCustom } = config;
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
 
     return route.replace(/^\//, '');
 }
+
 
 async function getUserHomeRoute(uid: string): Promise<string> {
     const settings: UserSettings = await user.getSettings(uid) as UserSettings;
