@@ -1,6 +1,3 @@
-
-
-
 import * as express from 'express';
 import * as url from 'url';
 import * as plugins from '../plugins';
@@ -71,9 +68,12 @@ async function rewrite(req: express.Request, res: express.Response, next: expres
 
 export { rewrite };
 
+
 function pluginHook(req: express.Request, res: express.Response, next: express.NextFunction): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const hook = `action:homepage.get:${res.locals.homePageRoute}`;
+    // assert the type of res.locals.homePageRoute
+    const hook = `action:homepage.get:${res.locals.homePageRoute as string}`;
+
     plugins.hooks
         .fire(hook, {
             req: req,
@@ -81,12 +81,10 @@ function pluginHook(req: express.Request, res: express.Response, next: express.N
             next: next,
         })
         .catch((error) => {
-            // Handle the error here if needed
+            // Handle the error here
             console.error('Error in pluginHook:', error);
-            next(error); // Propagate the error to the next middleware
+            next(error); // Propagate the error
         });
 }
 
-
 export { pluginHook };
-
