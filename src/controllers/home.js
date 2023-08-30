@@ -38,11 +38,7 @@ const plugins = __importStar(require("../plugins"));
 const meta = __importStar(require("../meta"));
 const user = __importStar(require("../user"));
 function adminHomePageRoute() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const { config } = meta;
-    const { homePageRoute } = config;
-    const { homePageCustom } = config;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    const { homePageRoute, homePageCustom } = meta.config;
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
     return route.replace(/^\//, '');
 }

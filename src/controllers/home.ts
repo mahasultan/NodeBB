@@ -1,3 +1,6 @@
+
+
+
 import * as express from 'express';
 import * as url from 'url';
 import * as plugins from '../plugins';
@@ -10,13 +13,18 @@ declare module 'express' {
     }
 }
 
+interface UserSettings {
+    homePageRoute?: string;
+}
+interface AppConfig {
+    homePageRoute: string;
+    homePageCustom: string;
+    // Add other properties from the config if needed
+}
+
 
 function adminHomePageRoute(): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const { config } = meta;
-    const { homePageRoute } = config;
-    const { homePageCustom } = config;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    const { homePageRoute, homePageCustom }: AppConfig = meta.config;
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
 
     return route.replace(/^\//, '');
@@ -24,7 +32,7 @@ function adminHomePageRoute(): string {
 
 async function getUserHomeRoute(uid: string): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const settings = await user.getSettings(uid);
+    const settings: UserSettings = await user.getSettings(uid);
     let route = adminHomePageRoute();
 
     if (settings.homePageRoute !== 'undefined' && settings.homePageRoute !== 'none') {
@@ -76,3 +84,4 @@ function pluginHook(req: express.Request, res: express.Response, next: express.N
 
 
 export { pluginHook };
+
