@@ -1,4 +1,6 @@
 
+
+
 import * as express from 'express';
 import * as url from 'url';
 import * as plugins from '../plugins';
@@ -25,9 +27,10 @@ function adminHomePageRoute(): string {
 
     return route.replace(/^\//, '');
 }
+
 async function getUserHomeRoute(uid: string): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const settings: UserSettings = await user.getSettings(uid) as UserSettings;
+    const settings: UserSettings = await user.getSettings(uid);
     let route = adminHomePageRoute();
 
     if (settings.homePageRoute !== 'undefined' && settings.homePageRoute !== 'none') {
@@ -68,12 +71,9 @@ async function rewrite(req: express.Request, res: express.Response, next: expres
 
 export { rewrite };
 
-
 function pluginHook(req: express.Request, res: express.Response, next: express.NextFunction): void {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    // assert the type of res.locals.homePageRoute
-    const hook = `action:homepage.get:${res.locals.homePageRoute as string}`;
-
+    const hook = `action:homepage.get:${res.locals.homePageRoute}`;
     plugins.hooks
         .fire(hook, {
             req: req,
@@ -81,12 +81,12 @@ function pluginHook(req: express.Request, res: express.Response, next: express.N
             next: next,
         })
         .catch((error) => {
-            // Handle the error here
+            // Handle the error here if needed
             console.error('Error in pluginHook:', error);
-            next(error); // Propagate the error
+            next(error); // Propagate the error to the next middleware
         });
 }
 
-export { pluginHook };
 
+export { pluginHook };
 
