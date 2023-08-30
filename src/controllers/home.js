@@ -38,9 +38,7 @@ const plugins = __importStar(require("../plugins"));
 const meta = __importStar(require("../meta"));
 const user = __importStar(require("../user"));
 function adminHomePageRoute() {
-    const { config } = meta;
-    const { homePageRoute } = config;
-    const { homePageCustom } = config;
+    const { homePageRoute, homePageCustom } = meta.config;
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
     return route.replace(/^\//, '');
 }
