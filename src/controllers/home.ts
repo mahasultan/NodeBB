@@ -10,17 +10,13 @@ declare module 'express' {
     }
 }
 
-interface UserSettings {
-    homePageRoute?: string;
-}
-interface AppConfig {
-    homePageRoute: string;
-    homePageCustom: string;
-}
-
 
 function adminHomePageRoute(): string {
-    const { homePageRoute, homePageCustom }: AppConfig = meta.config;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    const { config } = meta;
+    const { homePageRoute } = config;
+    const { homePageCustom } = config;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const route = (homePageRoute === 'custom' ? homePageCustom : homePageRoute) || 'categories';
 
     return route.replace(/^\//, '');
@@ -28,7 +24,7 @@ function adminHomePageRoute(): string {
 
 async function getUserHomeRoute(uid: string): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const settings: UserSettings = await user.getSettings(uid);
+    const settings = await user.getSettings(uid);
     let route = adminHomePageRoute();
 
     if (settings.homePageRoute !== 'undefined' && settings.homePageRoute !== 'none') {
