@@ -44,7 +44,6 @@ function adminHomePageRoute() {
 }
 function getUserHomeRoute(uid) {
     return __awaiter(this, void 0, void 0, function* () {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         const settings = yield user.getSettings(uid);
         let route = adminHomePageRoute();
         if (settings.homePageRoute !== 'undefined' && settings.homePageRoute !== 'none') {
@@ -84,7 +83,6 @@ function rewrite(req, res, next) {
 }
 exports.rewrite = rewrite;
 function pluginHook(req, res, next) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     // assert the type of res.locals.homePageRoute
     const hook = `action:homepage.get:${res.locals.homePageRoute}`;
     plugins.hooks

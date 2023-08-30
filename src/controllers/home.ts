@@ -13,6 +13,7 @@ declare module 'express' {
 interface UserSettings {
     homePageRoute?: string;
 }
+
 interface AppConfig {
     homePageRoute: string;
     homePageCustom: string;
@@ -26,8 +27,7 @@ function adminHomePageRoute(): string {
 }
 
 async function getUserHomeRoute(uid: string): Promise<string> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const settings: UserSettings = await user.getSettings(uid);
+    const settings: UserSettings = await user.getSettings(uid) as UserSettings;
     let route = adminHomePageRoute();
 
     if (settings.homePageRoute !== 'undefined' && settings.homePageRoute !== 'none') {
@@ -70,7 +70,6 @@ export { rewrite };
 
 
 function pluginHook(req: express.Request, res: express.Response, next: express.NextFunction): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     // assert the type of res.locals.homePageRoute
     const hook = `action:homepage.get:${res.locals.homePageRoute as string}`;
 
